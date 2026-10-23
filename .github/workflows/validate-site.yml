@@ -1,0 +1,85 @@
+name: Validate website source
+
+on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - "index.html"
+      - "favicon.svg"
+      - ".github/workflows/validate-site.yml"
+  pull_request:
+    paths:
+      - "index.html"
+      - "favicon.svg"
+      - ".github/workflows/validate-site.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Validate HTML structure, links, and required sections
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import re
+          import sys
+
+          source = Path("index.html").read_text(encoding="utf-8")
+          class PageParser(HTMLParser):
+              def __init__(self):
+                  super().__init__(convert_charrefs=True)
+                  self.ids = set()
+                  self.links = []
+                  self.title_open = False
+                  self.title_text = []
+                  self.title_seen = False
+                  self.html_seen = False
+                  self.head_seen = False
+                  self.body_seen = False
+                  self.errors = []
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  if tag == "html": self.html_seen = True
+                  if tag == "head": self.head_seen = True
+                  if tag == "body": self.body_seen = True
+                  if "id" in attrs:
+                      if attrs["id"] in self.ids:
+                          self.errors.append(f"Duplicate id: {attrs['id']}")
+                      self.ids.add(attrs["id"])
+                  if tag == "a" and attrs.get("href"):
+                      self.links.append(attrs["href"])
+                  if tag == "title":
+                      self.title_open = True
+                      self.title_seen = True
+              def handle_endtag(self, tag):
+                  if tag == "title": self.title_open = False
+              def handle_data(self, data):
+                  if self.title_open: self.title_text.append(data)
+          parser = PageParser()
+          parser.feed(source)
+          parser.close()
+          assert parser.html_seen and parser.head_seen and parser.body_seen, "Missing core HTML structure"
+          assert parser.title_seen and "".join(parser.title_text).strip(), "Missing page title"
+          assert 'name="viewport"' in source, "Missing mobile viewport"
+          assert 'id="features"' in source and 'id="download"' in source, "Missing required page sections"
+          for action in ("Free Download", "Buy Licence", "Buy Direct"):
+              assert action in source, f"Missing required action: {action}"
+          assert "15 minutes" in source, "Missing 15-minute trial explanation"
+          for href in parser.links:
+              if href.startswith("#") and href != "#":
+                  assert href[1:] in parser.ids, f"Broken in-page link: {href}"
+          assert not parser.errors, "; ".join(parser.errors)
+          assert not re.search(r"getmaya|maya\\.online", source, re.I), "Unapproved legacy brand text detected"
+          assert Path("favicon.svg").is_file(), "Missing favicon.svg"
+          print(f"Website source validation passed: {len(parser.ids)} IDs, {len(parser.links)} links, required actions and trial copy present.")
+          PY
