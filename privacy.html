@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080c18">
+<meta name="description" content="Privacy and safety information for SS AI ASSISTANT.">
+<title>Privacy & Safety — SS AI ASSISTANT</title>
+<style>
+:root{color-scheme:dark;--bg:#080c18;--panel:#11182a;--text:#f4f7ff;--muted:#a7b1c9;--cyan:#67e8f9;--violet:#a78bfa;--line:#ffffff20}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 75% 0%,#67e8f914,transparent 35%),var(--bg);color:var(--text);font:16px/1.75 system-ui,-apple-system,"Segoe UI",sans-serif}.wrap{width:min(850px,calc(100% - 32px));margin:auto}.nav{padding:22px 0;border-bottom:1px solid var(--line)}a{color:var(--cyan)}.brand{color:var(--text);font-weight:800;text-decoration:none}.logo{display:inline-grid;place-items:center;width:36px;height:36px;margin-right:9px;border-radius:11px;background:linear-gradient(135deg,var(--cyan),var(--violet));color:#08111f}.content{padding:48px 0 70px}h1{font-size:clamp(34px,6vw,48px);line-height:1.12;letter-spacing:-.04em}h2{margin-top:30px;font-size:22px}p,li{color:var(--muted)}.notice{padding:16px;border:1px solid #fbbf2438;background:#fbbf240c;border-radius:14px;color:#f4dca5}.back{display:inline-block;margin-top:24px;text-decoration:none}.footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<header class="wrap nav"><a class="brand" href="index.html"><span class="logo">SS</span>SS AI ASSISTANT</a></header>
+<main class="wrap content">
+<p class="notice"><strong>Pre-release notice:</strong> This privacy page describes the currently inspected app/backend behavior. It must be reviewed against the final hosting, app permissions, and provider settings before a public production launch.</p>
+<h1>Privacy & Safety</h1>
+<p>SS AI ASSISTANT is designed to help with AI chat, image analysis, voice interaction, and supported Android actions. Please review what you choose to share and the permissions you grant.</p>
+<h2>Information processed to provide AI responses</h2>
+<ul>
+<li><strong>Chat content:</strong> When you use AI chat, the app can send your messages and relevant context you choose to keep in the app to the SS AI backend for response generation.</li>
+<li><strong>Images:</strong> If you use image analysis, the selected image and prompt are sent to the backend and then to the configured AI provider for processing.</li>
+<li><strong>Network and abuse prevention:</strong> The backend uses the request IP address for rate limiting. The hosting platform and network providers may separately process technical logs under their own terms.</li>
+<li><strong>Device permissions:</strong> The Android app may request permissions for features such as microphone, camera, contacts, phone/SMS actions, location, Bluetooth, overlays, and accessibility-based navigation. Grant only permissions you understand and need; Android settings let you review permissions.</li>
+</ul>
+<h2>AI provider and service providers</h2>
+<p>The inspected backend sends chat and image-analysis requests to the configured Google Gemini API. Information sent for those features is subject to the relevant provider terms and privacy practices, as well as the account and service configuration used to operate the backend.</p>
+<h2>Storage and security</h2>
+<p>The inspected chat and vision routes do not implement an application database for chat history. This does not guarantee that infrastructure, hosting, diagnostics, or third-party providers retain no technical data. Do not submit passwords, payment-card details, government identifiers, or other highly sensitive information to AI prompts.</p>
+<p>Updater credentials are intended to remain on the backend and should never be shared with users. Download and install only approved signed releases from the official website once available.</p>
+<h2>Payments and licences</h2>
+<p>This website currently does not collect payments or issue licences. A payment provider, checkout, persistent licence service, and related privacy disclosures must be configured before purchases are enabled.</p>
+<h2>Children and sensitive information</h2>
+<p>Use the app responsibly and with appropriate adult guidance where needed. AI responses can be wrong or incomplete. Verify important information and do not rely on AI alone for medical, legal, financial, or emergency decisions.</p>
+<h2>Changes and contact</h2>
+<p>This page may need updates as the app, hosting, AI provider settings, and licensing services change. A dedicated privacy contact and final retention/deletion process have not yet been published; these should be provided before public launch.</p>
+<a class="back" href="index.html">← Back to SS AI ASSISTANT</a>
+</main>
+<footer class="footer"><div class="wrap">SS AI ASSISTANT · Privacy & Safety</div></footer>
+</body>
+</html>
