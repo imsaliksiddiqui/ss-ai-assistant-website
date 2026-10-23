@@ -78,8 +78,16 @@ jobs:
           for href in parser.links:
               if href.startswith("#") and href != "#":
                   assert href[1:] in parser.ids, f"Broken in-page link: {href}"
+              elif not href.startswith(("https://", "http://", "mailto:")):
+                  local_target = href.split("#", 1)[0]
+                  if local_target:
+                      assert Path(local_target).is_file(), f"Missing local link target: {href}"
           assert not parser.errors, "; ".join(parser.errors)
-          assert not re.search(r"getmaya|maya\\.online", source, re.I), "Unapproved legacy brand text detected"
+          assert not re.search(r"getmaya|maya[.]online", source, re.I), "Unapproved legacy brand text detected"
+          for page_name in ("privacy.html", "terms.html"):
+              page = Path(page_name).read_text(encoding="utf-8")
+              assert "<html" in page and "<title>" in page and 'name="viewport"' in page, f"Incomplete page: {page_name}"
+              assert not re.search(r"getmaya|maya[.]online", page, re.I), f"Unapproved legacy brand text in {page_name}"
           assert Path("favicon.svg").is_file(), "Missing favicon.svg"
-          print(f"Website source validation passed: {len(parser.ids)} IDs, {len(parser.links)} links, required actions and trial copy present.")
+          print(f"Website source validation passed: {len(parser.ids)} IDs, {len(parser.links)} links, required actions, trial copy, privacy and terms pages present.")
           PY
