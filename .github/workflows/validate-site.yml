@@ -81,6 +81,10 @@ jobs:
           for page_name in ("privacy.html", "terms.html"):
               page = Path(page_name).read_text(encoding="utf-8")
               assert "<html" in page and "<title>" in page and 'name="viewport"' in page, f"Incomplete page: {page_name}"
+          privacy = Path("privacy.html").read_text(encoding="utf-8")
+          for required in ("Information you choose to send", "Storage and retention", "Security", "Changes and privacy requests", "23 October 2026"):
+              assert required in privacy, f"Privacy notice missing section: {required}"
+          assert "passwords" in privacy and "Google Gemini API" in privacy, "Privacy notice missing sensitive-data or provider disclosure"
           assert Path("favicon.svg").is_file(), "Missing favicon.svg"
           print(f"Website source validation passed: {len(parser.ids)} IDs, {len(parser.links)} links, required actions and legal pages present.")
           PY
