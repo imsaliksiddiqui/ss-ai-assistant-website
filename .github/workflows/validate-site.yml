@@ -96,7 +96,7 @@ jobs:
               if href.startswith("#"):
                   assert f'id="{href[1:]}"' in android, f"Broken Android anchor: {href}"
               elif href.startswith("../"):
-                  target = Path(href.split("#", 1)[0])
+                  target = Path("android") / href.split("#", 1)[0]
                   if str(target) != "..": assert target.is_file(), f"Broken Android local link: {href}"
           assert 'id="menubtn"' in android and 'name="access"' in android, "Missing Android interactions"
           assert Path("favicon.svg").is_file(), "Missing favicon.svg"
