@@ -78,9 +78,9 @@ jobs:
                   local_target = href.split("#", 1)[0]
                   if local_target:
                       target = Path(local_target)
-                  if href.endswith("/"):
-                      target = target / "index.html"
-                  assert target.is_file(), f"Missing local link target: {href}"
+                      if target.is_dir():
+                          target = target / "index.html"
+                      assert target.is_file(), f"Missing local link target: {href}"
           assert not parser.errors, "; ".join(parser.errors)
           for page_name in ("privacy.html", "terms.html"):
               page = Path(page_name).read_text(encoding="utf-8")
