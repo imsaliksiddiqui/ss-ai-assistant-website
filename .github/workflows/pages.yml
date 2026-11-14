@@ -32,6 +32,8 @@ jobs:
           set -eu
           mkdir -p site
           cp index.html favicon.svg privacy.html terms.html site/
+          mkdir -p site/android
+          cp android/index.html site/android/index.html
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
