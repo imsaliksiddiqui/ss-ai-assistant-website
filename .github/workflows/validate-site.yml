@@ -1,3 +1,4 @@
+# MANUAL RUN ORDER: 1) Run this validation workflow first. 2) Run 'Deploy website to GitHub Pages' only after this workflow succeeds.
 name: Validate website source
 
 on:
