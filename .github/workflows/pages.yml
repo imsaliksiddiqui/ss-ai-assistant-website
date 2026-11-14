@@ -1,3 +1,4 @@
+# MANUAL RUN ORDER: Run 'Validate website source' first. Deploy only after validation succeeds.
 name: Deploy website to GitHub Pages
 
 on:
