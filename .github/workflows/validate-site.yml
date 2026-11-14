@@ -6,6 +6,7 @@ on:
       - "**"
     paths:
       - "index.html"
+      - "android/index.html"
       - "privacy.html"
       - "terms.html"
       - "favicon.svg"
@@ -85,6 +86,19 @@ jobs:
           for required in ("Information you choose to send", "Storage and retention", "Security", "Changes and privacy requests", "23 October 2026"):
               assert required in privacy, f"Privacy notice missing section: {required}"
           assert "passwords" in privacy and "Google Gemini API" in privacy, "Privacy notice missing sensitive-data or provider disclosure"
+
+          android = Path("android/index.html").read_text(encoding="utf-8")
+          for required in ("features", "plans", "updates", "download", "buy", "faq", "install", "capabilities"):
+              assert f'id="{required}"' in android, f"Android page missing section: {required}"
+          assert android.count('class="feature"') == 22, "Android page must contain 22 capability cards"
+          assert android.count('class="suite"') == 17, "Android page must contain 17 action suites"
+          for href in re.findall(r'href="([^"]+)"', android):
+              if href.startswith("#"):
+                  assert f'id="{href[1:]}"' in android, f"Broken Android anchor: {href}"
+              elif href.startswith("../"):
+                  target = Path(href.split("#", 1)[0])
+                  if str(target) != "..": assert target.is_file(), f"Broken Android local link: {href}"
+          assert 'id="menubtn"' in android and 'name="access"' in android, "Missing Android interactions"
           assert Path("favicon.svg").is_file(), "Missing favicon.svg"
           print(f"Website source validation passed: {len(parser.ids)} IDs, {len(parser.links)} links, required actions and legal pages present.")
           PY
